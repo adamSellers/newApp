@@ -3,12 +3,20 @@ import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { loadUser } from './actions/authActions';
+import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
+
+// pages imported
+import BusinessPage from './pages/BusinessPage';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
+import LocationsPage from './pages/LocationsPage';
+import ShiftTypesPage from './pages/ShiftTypesPage';
+import RostersPage from './pages/RostersPage';
+
+// common components imported
 import Navbar from './components/Navbar';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -41,6 +49,46 @@ const App = () => {
           element={
             <RequireAuth>
               <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/"
+          element={
+            <RequireAuth>
+              <HomePage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/business"
+          element={
+            <RequireAuth>
+              <BusinessPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/locations"
+          element={
+            <RequireAuth>
+              <LocationsPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/shift-types"
+          element={
+            <RequireAuth>
+              <ShiftTypesPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/rosters"
+          element={
+            <RequireAuth>
+              <RostersPage />
             </RequireAuth>
           }
         />

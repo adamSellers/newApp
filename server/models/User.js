@@ -13,6 +13,10 @@ const UserSchema = new mongoose.Schema({
         required: true,
         minlength: 6, // Minimum password length
     },
+    business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Business",
+    },
     createdAt: {
         type: Date,
         default: Date.now,

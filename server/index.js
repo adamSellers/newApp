@@ -6,10 +6,16 @@ const cors = require("cors");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const connectDB = require("./db");
-const authRoutes = require("./routes/authRoutes");
 const path = require("path");
 const logger = require("morgan");
 const cookieParser = require("cookie-parser");
+
+// route imports
+const authRoutes = require("./routes/authRoutes");
+const businessRoutes = require("./routes/businessRoutes");
+const locationRoutes = require("./routes/locationRoutes");
+const shiftTypeRoutes = require("./routes/shiftTypeRoutes");
+const rosterRoutes = require("./routes/rosterRoutes");
 
 var app = express();
 
@@ -45,6 +51,10 @@ app.use(
 
 // Routes
 app.use("/api/auth", authRoutes);
+app.use("/api/business", businessRoutes);
+app.use("/api/locations", locationRoutes);
+app.use("/api/shift-types", shiftTypeRoutes);
+app.use("/api/rosters", rosterRoutes);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

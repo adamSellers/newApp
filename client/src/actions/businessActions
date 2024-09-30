@@ -1,0 +1,38 @@
+// src/actions/businessActions.js
+import axios from '../axiosInstance';
+
+export const getBusiness = () => async (dispatch) => {
+  try {
+    const res = await axios.get('/business');
+    dispatch({ type: 'GET_BUSINESS_SUCCESS', payload: res.data.business });
+  } catch (err) {
+    dispatch({
+      type: 'GET_BUSINESS_FAIL',
+      payload: err.response?.data?.msg || 'Failed to get business',
+    });
+  }
+};
+
+export const createBusiness = (name) => async (dispatch) => {
+  try {
+    const res = await axios.post('/business', { name });
+    dispatch({ type: 'CREATE_BUSINESS_SUCCESS', payload: res.data.business });
+  } catch (err) {
+    dispatch({
+      type: 'CREATE_BUSINESS_FAIL',
+      payload: err.response?.data?.msg || 'Failed to create business',
+    });
+  }
+};
+
+export const updateBusiness = (name) => async (dispatch) => {
+  try {
+    const res = await axios.put('/business', { name });
+    dispatch({ type: 'UPDATE_BUSINESS_SUCCESS', payload: res.data.business });
+  } catch (err) {
+    dispatch({
+      type: 'UPDATE_BUSINESS_FAIL',
+      payload: err.response?.data?.msg || 'Failed to update business',
+    });
+  }
+};
