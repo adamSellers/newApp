@@ -1,7 +1,9 @@
 // server/controllers/rosterController.js
+
 const Roster = require("../models/Roster");
 const Business = require("../models/Business");
 const Location = require("../models/Location");
+const Shift = require("../models/Shift"); // Import the Shift model
 
 // Create a new roster
 exports.createRoster = async (req, res) => {
@@ -52,11 +54,28 @@ exports.getRosters = async (req, res) => {
         }).select("_id");
         const locationIds = locations.map((loc) => loc._id);
 
-        const rosters = await Roster.find({
-            location: { $in: locationIds },
-        }).populate("location");
+        const rosters = await Roster.find({ location: { $in: locationIds } })
+            .populate("location")
+            .lean(); // Use lean() to get plain JavaScript objects
 
-        res.json({ rosters });
+        // Add hasShifts property to each roster
+        const rosterIds = rosters.map((roster) => roster._id);
+        const shifts = await Shift.aggregate([
+            { $match: { roster: { $in: rosterIds } } },
+            { $group: { _id: "$roster", count: { $sum: 1 } } },
+        ]);
+
+        const shiftsMap = {};
+        shifts.forEach((shift) => {
+            shiftsMap[shift._id.toString()] = shift.count;
+        });
+
+        const rostersWithShifts = rosters.map((roster) => ({
+            ...roster,
+            hasShifts: !!shiftsMap[roster._id.toString()],
+        }));
+
+        res.json({ rosters: rostersWithShifts });
     } catch (err) {
         console.error("Error fetching rosters:", err.message);
         res.status(500).send("Server error");
@@ -144,8 +163,17 @@ exports.deleteRoster = async (req, res) => {
             return res.status(401).json({ msg: "Unauthorized" });
         }
 
+        // Check for associated shifts
+        const shiftCount = await Shift.countDocuments({ roster: roster._id });
+
+        if (shiftCount > 0) {
+            return res
+                .status(400)
+                .json({ msg: "Cannot delete roster with associated shifts" });
+        }
+
         // Delete roster
-        await roster.remove();
+        await roster.deleteOne();
 
         res.json({ msg: "Roster deleted" });
     } catch (err) {

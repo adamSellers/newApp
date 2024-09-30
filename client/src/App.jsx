@@ -14,6 +14,7 @@ import HomePage from './pages/HomePage';
 import LocationsPage from './pages/LocationsPage';
 import ShiftTypesPage from './pages/ShiftTypesPage';
 import RostersPage from './pages/RostersPage';
+import RosterDetailsPage from './pages/RosterDetailsPage';
 
 // common components imported
 import Navbar from './components/Navbar';
@@ -89,6 +90,14 @@ const App = () => {
           element={
             <RequireAuth>
               <RostersPage />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/rosters/:id"
+          element={
+            <RequireAuth>
+              <RosterDetailsPage />
             </RequireAuth>
           }
         />

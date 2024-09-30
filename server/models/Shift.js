@@ -1,4 +1,5 @@
 // server/models/Shift.js
+
 const mongoose = require("mongoose");
 
 const ShiftSchema = new mongoose.Schema({
@@ -12,17 +13,22 @@ const ShiftSchema = new mongoose.Schema({
         ref: "ShiftType",
         required: true,
     },
+    date: {
+        type: Date,
+        required: true,
+    },
     startTime: {
-        type: String, // Using string to represent time (e.g., '06:00')
+        type: String, // e.g., '08:00'
         required: true,
     },
     endTime: {
-        type: String, // Using string to represent time (e.g., '10:00')
+        type: String, // e.g., '16:00'
         required: true,
     },
     numberOfStaff: {
         type: Number,
         required: true,
+        min: 1,
     },
 });
 

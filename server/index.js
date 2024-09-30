@@ -16,6 +16,7 @@ const businessRoutes = require("./routes/businessRoutes");
 const locationRoutes = require("./routes/locationRoutes");
 const shiftTypeRoutes = require("./routes/shiftTypeRoutes");
 const rosterRoutes = require("./routes/rosterRoutes");
+const shiftRoutes = require("./routes/shiftRoutes");
 
 var app = express();
 
@@ -55,6 +56,7 @@ app.use("/api/business", businessRoutes);
 app.use("/api/locations", locationRoutes);
 app.use("/api/shift-types", shiftTypeRoutes);
 app.use("/api/rosters", rosterRoutes);
+app.use("/api/shifts", shiftRoutes);
 
 // view engine setup
 app.set("views", path.join(__dirname, "views"));

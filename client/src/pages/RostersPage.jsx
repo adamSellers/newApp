@@ -30,14 +30,13 @@ import {
   FormControl,
 } from '@mui/material';
 import { Edit, Delete } from '@mui/icons-material';
-
-// Updated imports for date pickers
 import { LocalizationProvider, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
+import { Link as RouterLink } from 'react-router-dom';
 
 const RostersPage = () => {
   const dispatch = useDispatch();
-  const { rosters, error } = useSelector((state) => state.rosters);
+  const { rosters, error, deleteError } = useSelector((state) => state.rosters);
   const { locations } = useSelector((state) => state.locations);
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -115,6 +114,7 @@ const RostersPage = () => {
           Manage Rosters
         </Typography>
         {error && <Alert severity="error">{error}</Alert>}
+        {deleteError && <Alert severity="error">{deleteError}</Alert>}
         <Button variant="contained" onClick={() => handleOpenDialog()} sx={{ mb: 2 }}>
           Add New Roster
         </Button>
@@ -127,11 +127,18 @@ const RostersPage = () => {
                   <IconButton edge="end" onClick={() => handleOpenDialog(roster)}>
                     <Edit />
                   </IconButton>
-                  <IconButton edge="end" onClick={() => handleDelete(roster._id)}>
+                  <IconButton
+                    edge="end"
+                    onClick={() => handleDelete(roster._id)}
+                    disabled={roster.hasShifts}
+                  >
                     <Delete />
                   </IconButton>
                 </>
               }
+              button
+              component={RouterLink}
+              to={`/rosters/${roster._id}`}
             >
               <ListItemText
                 primary={roster.name}

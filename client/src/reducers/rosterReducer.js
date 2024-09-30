@@ -34,7 +34,7 @@ const rosterReducer = (state = initialState, action) => {
         case "CREATE_ROSTER_FAIL":
         case "UPDATE_ROSTER_FAIL":
         case "DELETE_ROSTER_FAIL":
-            return { ...state, error: action.payload };
+            return { ...state, deleteError: action.payload };
         default:
             return state;
     }
